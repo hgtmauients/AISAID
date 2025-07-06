@@ -45,7 +45,7 @@ export default async function handler(req, res) {
   const userId = req.headers["x-extension-user-id"];
 
   // ✅ Replace with your actual Chrome extension ID
-  const allowedExtensionId = "your-chrome-extension-id-here";
+  const allowedExtensionId = "gbpkbiilbbfmbhmcphicdejcgcfnjgif";
 
   if (extensionId !== allowedExtensionId) {
     return res.status(403).json({ error: "Forbidden: Invalid Extension ID" });
