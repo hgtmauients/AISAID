@@ -1,18 +1,21 @@
-import Stripe from "stripe";
-import admin from "firebase-admin";
-import { buffer } from "micro";
+import Stripe from 'stripe';
+import { buffer } from 'micro';
+import admin from 'firebase-admin';
 
-// Initialize Firebase Admin if not already initialized
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
+// Initialize Firebase Admin SDK securely
 if (!admin.apps.length) {
   admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
-    databaseURL: "https://aisaid.firebaseio.com"
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    }),
   });
 }
-
 const db = admin.firestore();
-const stripe = new Stripe("sk_test_YOUR_SECRET_KEY_HERE"); // 🔁 Replace with real key
-const endpointSecret = "whsec_YOUR_WEBHOOK_SECRET_HERE";   // 🔁 Replace with real secret
 
 export const config = {
   api: {
@@ -21,18 +24,18 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).send("Method Not Allowed");
+  if (req.method !== 'POST') {
+    return res.status(405).send('Method Not Allowed');
   }
 
   let event;
-  const sig = req.headers["stripe-signature"];
+  const sig = req.headers['stripe-signature'];
+  const buf = await buffer(req);
 
   try {
-    const rawBody = await buffer(req);
-    event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(buf, sig, endpointSecret);
   } catch (err) {
-    console.error("❌ Webhook verification failed:", err.message);
+    console.error('Webhook verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
@@ -41,29 +44,22 @@ export default async function handler(req, res) {
 
   try {
     switch (event.type) {
-      case "checkout.session.completed":
-        await db.collection("users").doc(userId).set(
-          { hasPaid: true },
-          { merge: true }
-        );
-        console.log(`✅ Marked paid: ${userId}`);
+      case 'checkout.session.completed':
+        await db.collection('users').doc(userId).set({ hasPaid: true }, { merge: true });
         break;
 
-      case "invoice.payment_failed":
-      case "customer.subscription.deleted":
-        await db.collection("users").doc(userId).set(
-          { hasPaid: false },
-          { merge: true }
-        );
-        console.log(`⚠️ Marked unpaid: ${userId}`);
+      case 'invoice.payment_failed':
+      case 'customer.subscription.deleted':
+        await db.collection('users').doc(userId).set({ hasPaid: false }, { merge: true });
         break;
 
       default:
-        console.log(`ℹ️ Unhandled event type: ${event.type}`);
+        console.log(`Unhandled event: ${event.type}`);
     }
-  } catch (err) {
-    console.error("🔥 Firestore update error:", err.message);
-  }
 
-  res.status(200).send("Received");
+    res.status(200).send('Received');
+  } catch (err) {
+    console.error('Firestore error:', err.message);
+    res.status(500).send('Internal Server Error');
+  }
 }
