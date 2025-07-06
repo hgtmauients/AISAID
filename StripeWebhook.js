@@ -5,16 +5,16 @@ import admin from 'firebase-admin';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-// Initialize Firebase Admin SDK securely
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      projectId: "aisaid",
+      clientEmail: "firebase-adminsdk@aisaid.iam.gserviceaccount.com", // Replace with your actual Firebase clientEmail if different
       privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
     }),
   });
 }
+
 const db = admin.firestore();
 
 export const config = {
@@ -28,14 +28,14 @@ export default async function handler(req, res) {
     return res.status(405).send('Method Not Allowed');
   }
 
-  let event;
   const sig = req.headers['stripe-signature'];
   const buf = await buffer(req);
 
+  let event;
   try {
     event = stripe.webhooks.constructEvent(buf, sig, endpointSecret);
   } catch (err) {
-    console.error('Webhook verification failed:', err.message);
+    console.error('❌ Webhook signature verification failed:', err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
@@ -54,12 +54,12 @@ export default async function handler(req, res) {
         break;
 
       default:
-        console.log(`Unhandled event: ${event.type}`);
+        console.log(`ℹ️ Unhandled event type: ${event.type}`);
     }
 
-    res.status(200).send('Received');
+    res.status(200).send('✅ Webhook received and processed');
   } catch (err) {
-    console.error('Firestore error:', err.message);
-    res.status(500).send('Internal Server Error');
+    console.error('🔥 Firestore update error:', err.message);
+    res.status(500).send('Error processing webhook');
   }
 }
