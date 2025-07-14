@@ -4,70 +4,235 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Said – Rewrite Smarter</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      overflow-x: hidden;
       color: white;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 100vh;
     }
+
+    canvas#stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+    }
+
     header {
-      padding: 2rem;
+      text-align: center;
+      padding: 4rem 1rem 1rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeSlideIn 2s ease forwards;
+      animation-delay: 0.5s;
+      z-index: 1;
+      position: relative;
     }
-    header img {
-      max-width: 120px;
-      margin-bottom: 1rem;
+
+    @keyframes fadeSlideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
+
+    .logo {
+      width: 100px;
+      animation: pulse 2.5s ease-in-out infinite;
     }
-    p {
-      font-size: 1.25rem;
-      max-width: 600px;
-      margin: 0 auto 2rem;
-      line-height: 1.6;
+
+    h1.typewriter {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid white;
+      animation: typing 3s steps(30, end), blink 0.75s step-end infinite;
+      font-size: 2.5rem;
+      margin: 1rem 0 0.5rem;
     }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    p.flicker {
+      font-size: 1.2rem;
+      animation: flicker 3s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.5;
+      }
+    }
+
     .cta-button {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      background: #00c6ff;
-      background: linear-gradient(to right, #0072ff, #00c6ff);
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
+      background: #ff4081;
       color: white;
-      text-decoration: none;
-      transition: background 0.3s ease;
+      padding: 0.8rem 2rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 50px;
+      margin-top: 2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px #ff4081, 0 0 20px #ff4081;
+      position: relative;
+      z-index: 1;
     }
+
     .cta-button:hover {
-      background: linear-gradient(to right, #00c6ff, #0072ff);
+      box-shadow: 0 0 25px #ff4081, 0 0 40px #ff4081;
+      transform: scale(1.05);
     }
-    footer {
-      margin-top: 3rem;
-      font-size: 0.875rem;
-      opacity: 0.6;
+
+    #aiDog {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      transition: transform 0.3s ease;
+      z-index: 1;
+    }
+
+    #aiDog:hover {
+      animation: dogPeek 1.2s ease;
+    }
+
+    @keyframes dogPeek {
+      0% { transform: translateX(-50%) translateY(0); }
+      25% { transform: translateX(-60%) translateY(-15px) rotate(-2deg); }
+      50% { transform: translateX(-50%) translateY(-20px) rotate(2deg); }
+      75% { transform: translateX(-40%) translateY(-15px) rotate(-2deg); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+
+    #aiDog.excited {
+      animation: excitedBounce 0.9s ease;
+    }
+
+    @keyframes excitedBounce {
+      0%   { transform: translateX(-50%) translateY(0); }
+      30%  { transform: translateX(-50%) translateY(-25px) rotate(5deg); }
+      50%  { transform: translateX(-50%) translateY(10px) rotate(-5deg); }
+      70%  { transform: translateX(-50%) translateY(-15px) rotate(3deg); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+
+    .thought-bubble {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5rem;
+      background: white;
+      color: black;
+      border-radius: 1rem;
+      padding: 0.3rem 0.7rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    #aiDog:hover + .thought-bubble {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
+  <canvas id="stars"></canvas>
   <header>
-    <img src="./logo.png" alt="AI Said Logo">
-    <h1>AI Said</h1>
-    <p>Your AI-powered Chrome Extension for rewriting, responding, and refining your message — instantly, in your voice.</p>
-    <a href="https://chrome.google.com/webstore/detail/ai-said/gbpkbiilbbfmbhmcphicdejcgcfnjgif" class="cta-button" target="_blank" rel="noopener noreferrer">
-      Get the Extension
-    </a>
+    <img src="logo.png" alt="AI Said Logo" class="logo" />
+    <h1 class="typewriter">Rewrite Smarter with AI Said</h1>
+    <p class="flicker">Your intelligent assistant for tone, clarity, and language magic</p>
   </header>
-  <footer>© 2025 Harrington Maui Enterprises. All rights reserved.</footer>
+
+  <main style="position: relative; padding-bottom: 200px; text-align:center;">
+    <button id="getExtensionBtn" class="cta-button">Get Extension</button>
+    <div>
+      <img src="ai-dog.png" id="aiDog" alt="AI Dog" />
+      <div class="thought-bubble">💜</div>
+    </div>
+  </main>
+
+  <script>
+    // Floating stars
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function createStars(count) {
+      stars = [];
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.2,
+          alpha: Math.random(),
+          delta: Math.random() * 0.02
+        });
+      }
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let star of stars) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = `rgba(255,255,255,${star.alpha})`;
+        ctx.fill();
+        star.alpha += star.delta;
+        if (star.alpha <= 0 || star.alpha >= 1) star.delta = -star.delta;
+      }
+      requestAnimationFrame(animateStars);
+    }
+
+    resizeCanvas();
+    createStars(150);
+    animateStars();
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      createStars(150);
+    });
+
+    const dog = document.getElementById("aiDog");
+    const btn = document.getElementById("getExtensionBtn");
+    const thoughtBubble = document.querySelector(".thought-bubble");
+
+    btn.addEventListener("click", () => {
+      dog.classList.add("excited");
+      setTimeout(() => dog.classList.remove("excited"), 1000);
+      confetti({ particleCount: 100, spread: 60, origin: { y: 0.7 } });
+    });
+
+    // Rotate dog thoughts
+    const thoughts = ["🧤", "🤖💭", "✨", "⚡️", "🐾"];
+    setInterval(() => {
+      const random = thoughts[Math.floor(Math.random() * thoughts.length)];
+      thoughtBubble.textContent = random;
+    }, 5000);
+  </script>
 </body>
 </html>
-
