@@ -9,7 +9,7 @@
     html, body {
       margin: 0;
       padding: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
       background: radial-gradient(ellipse at bottom, #0f2027 0%, #203a43 40%, #2c5364 100%);
       color: white;
       overflow-x: hidden;
@@ -84,15 +84,32 @@
     }
 
     .mainbot {
-      width: 160px;
-      margin-bottom: 2rem;
-      animation: floaty 4s ease-in-out infinite;
-      filter: drop-shadow(0 0 25px rgba(0,200,255,0.4));
+  width: 160px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  animation: flyPath 2.8s ease-in-out forwards;
+  z-index: 2;
+  pointer-events: none;
 }
-    @keyframes floaty {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-    }
+
+@keyframes flyPath {
+  0%   { top: -150px; left: -100px; transform: rotate(-30deg) scale(0.4); opacity: 0; }
+  30%  { top: 100px; left: 80%; transform: rotate(15deg) scale(0.8); opacity: 1; }
+  60%  { top: 200px; left: 55%; transform: rotate(-10deg) scale(1); }
+  100% { top: 290px; left: 30%; transform: rotate(0deg) scale(1); }
+}
+
+@keyframes floatIdle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes zoomOutAtYou {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(3.8); opacity: 0; }
+}
 
     canvas#confetti-canvas {
       position: fixed;
@@ -105,47 +122,53 @@
       margin-top: 6rem;
       font-size: 0.9rem;
       opacity: 0.8;
-      z-index: 2;
     }
   </style>
 </head>
 <body>
   <div class="stars"></div>
 
-  <img class="mainbot" src="logo.png" alt="Main AI Bot" />
+   <img id="mainbot" class="mainbot" src="logo.png" alt="Main AI Bot" />
 
- <header>
-  <h1 style="text-shadow: 0 0 8px rgba(0, 200, 255, 0.5);">
-    AI Said: Search, Respond, Summarize, and Translate
-  </h1>
-  <p style="text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);">
-    Your intelligent assistant for language magic
-  </p>
-  <div style="position: relative; display: inline-block;">
-    <button class="cta-button" onclick="celebrate(); window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank')">
-      Download from Chrome Web Store
-    </button>
-  </div>
-</header>
+  <header>
+    <h1 style="text-shadow: 0 0 8px rgba(0, 200, 255, 0.5);">
+      AI Said: Search, Respond, Summarize, and Translate
+    </h1>
+    <p style="text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);">
+      Your intelligent assistant for language magic
+    </p>
+    <div style="position: relative; display: inline-block;">
+      <button class="cta-button" onclick="celebrate(); window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank')">
+        Download from Chrome Web Store
+      </button>
+    </div>
+  </header>
 
-<canvas id="confetti-canvas"></canvas>
+  <canvas id="confetti-canvas"></canvas>
 
-<footer style="margin-top: 4rem; font-size: 0.9rem; opacity: 0.8;">
-  © 2025 Harrington Maui Enterprises. All rights reserved.
-</footer>
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const bot = document.getElementById('mainbot');
 
-<!-- Confetti Library -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-<script>
-  function celebrate() {
-    confetti({
-      particleCount: 70,
-      spread: 80,
-      origin: { y: 0.6 }
+    bot.addEventListener('animationend', () => {
+      bot.style.animation = "floatIdle 3.5s ease-in-out infinite";
     });
-  }
-</script>
 
-</body>
-</html>
+    function celebrate() {
+      bot.style.animation = "zoomOutAtYou 1s ease-out forwards";
+      confetti({
+        particleCount: 120,
+        spread: 100,
+        origin: { y: 0.6 }
+      });
+      setTimeout(() => {
+        window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
+      }, 900);
+    }
+  </script>
+
+ <footer>
+
+    © 2025 Harrington Maui Enterprises. All rights reserved.
+  </footer>
