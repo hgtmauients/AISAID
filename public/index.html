@@ -87,8 +87,6 @@
     #mainbot {
       width: 160px;
       position: absolute;
-      top: 0;
-      left: 0;
       opacity: 0;
       z-index: 3;
       pointer-events: none;
@@ -137,7 +135,7 @@
     const button = document.querySelector('.cta-button');
     const canvas = document.getElementById('confetti-canvas');
 
-    // Fly bot to button on load
+    // Bot flies to button on load
     window.addEventListener('load', () => {
       const rect = button.getBoundingClientRect();
       const scrollY = window.scrollY || window.pageYOffset;
@@ -152,30 +150,26 @@
       setTimeout(() => {
         bot.style.transition = 'none';
         bot.style.animation = 'floatIdle 3s ease-in-out infinite';
+        bot.style.transform = 'translateY(0)'; // prevent snap-back
       }, 3000);
     });
 
-    // Celebration on CTA click
     function celebrate() {
-      bot.style.animation = 'none';
-      bot.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
-      bot.style.transform += ' scale(3.5)';
-      bot.style.opacity = '0.3';
-
+      // Trigger confetti from bot's current position
       const botRect = bot.getBoundingClientRect();
       const confettiX = (botRect.left + botRect.width / 2) / window.innerWidth;
       const confettiY = (botRect.top + botRect.height / 2) / window.innerHeight;
 
       const confettiInstance = confetti.create(canvas, { resize: true });
       confettiInstance({
-        particleCount: 120,
-        spread: 100,
+        particleCount: 140,
+        spread: 90,
         origin: { x: confettiX, y: confettiY }
       });
 
       setTimeout(() => {
         window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
-      }, 1000);
+      }, 600);
     }
   </script>
 
