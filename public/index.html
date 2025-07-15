@@ -23,32 +23,33 @@
       justify-content: center;
       min-height: 100vh;
       position: relative;
+      text-align: center;
     }
 
     .stars {
       position: fixed;
       inset: 0;
       background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+      animation: twinkle 100s linear infinite;
       pointer-events: none;
       z-index: 0;
     }
 
+    @keyframes twinkle {
+      0% { background-position: 0 0; }
+      100% { background-position: 1000px 1000px; }
+    }
+
     header {
-      text-align: center;
       z-index: 2;
       animation: fadeIn 1.5s ease-in forwards;
       opacity: 0;
+      margin-top: 2rem;
     }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
     }
 
     h1 {
@@ -83,7 +84,7 @@
     .mainbot {
       width: 160px;
       margin-bottom: 2rem;
-      animation: floaty 4s ease-in-out infinite,;
+      animation: floaty 4s ease-in-out infinite;
     }
 
     @keyframes floaty {
@@ -91,16 +92,18 @@
       50% { transform: translateY(-10px); }
     }
 
-    @keyframes blink {
-      0%, 96%, 100% { filter: none; }
-      97%, 99% { filter: brightness(0.6); }
-    }
-
     canvas#confetti-canvas {
       position: fixed;
       pointer-events: none;
       inset: 0;
       z-index: 1;
+    }
+
+    footer {
+      margin-top: 6rem;
+      font-size: 0.9rem;
+      opacity: 0.8;
+      z-index: 2;
     }
   </style>
 </head>
@@ -110,16 +113,20 @@
   <img class="mainbot" src="logo.png" alt="Main AI Bot" />
 
   <header>
-    <h1>AI Said:Search, Respond, Summarize, and Translate </h1>
+    <h1>AI Said: Search, Respond, Summarize, and Translate</h1>
     <p>Your intelligent assistant for tone, style, and language magic</p>
     <div style="position: relative; display: inline-block;">
-      <button class="cta-button" onclick="window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank')">
-  Download from Chrome Web Store
-</button>
-
+      <button class="cta-button" onclick="celebrate(); window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank')">
+        Download from Chrome Web Store
+      </button>
     </div>
   </header>
+
   <canvas id="confetti-canvas"></canvas>
+
+  <footer>
+    © 2025 Harrington Maui Enterprises. All rights reserved.
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
@@ -129,15 +136,7 @@
         spread: 80,
         origin: { y: 0.6 }
       });
-    } 
-<div style="position: relative; display: inline-block;">
-  <button class="cta-button" onclick="celebrate()">Download from Chrome Store</button>
-</div>
-
-<footer style="margin-top: 4rem; font-size: 0.9rem; opacity: 0.8;">
-  © 2025 Harrington Maui Enterprises. All rights reserved.
-</footer>
-
-
+    }
+  </script>
 </body>
 </html>
