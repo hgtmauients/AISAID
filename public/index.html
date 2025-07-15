@@ -115,10 +115,11 @@
     }
 
     footer {
-      margin-top: 6rem;
+      margin-top: 4rem;
       font-size: 0.9rem;
       opacity: 0.8;
       z-index: 2;
+      text-align: center;
     }
   </style>
 </head>
@@ -131,7 +132,7 @@
 
     <div class="cta-wrapper">
       <img id="mainbot" src="logo.png" alt="Main AI Bot" />
-      <button id="cta" class="cta-button" onclick="celebrate()">
+      <button id="cta" class="cta-button" onclick="celebrateAndOpen()">
         Download from Chrome Web Store
       </button>
     </div>
@@ -146,7 +147,7 @@
   <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
-    function celebrate() {
+    function celebrateAndOpen() {
       const button = document.getElementById('cta');
       const rect = button.getBoundingClientRect();
       const x = (rect.left + rect.width / 2) / window.innerWidth;
@@ -156,11 +157,14 @@
       const confettiInstance = confetti.create(canvas, { resize: true, useWorker: true });
 
       confettiInstance({
-        particleCount: 140,
-        spread: 100,
-        startVelocity: 30,
+        particleCount: 200,
+        spread: 160,
+        startVelocity: 45,
         origin: { x, y }
       });
+
+      // Open Chrome Web Store (replace with your actual extension URL)
+      window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
     }
   </script>
 </body>
