@@ -65,6 +65,14 @@
       text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);
     }
 
+    .cta-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
     .cta-button {
       background: #ff5e7e;
       color: white;
@@ -85,37 +93,15 @@
     }
 
     #mainbot {
-      width: 160px;
-      position: absolute;
-      top: -120px;
-      left: -150px;
+      width: 120px;
+      animation: floatIdle 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.3));
       z-index: 3;
-      opacity: 0;
-      animation: spaceFly 4s ease-in-out forwards;
-      filter: drop-shadow(0 0 25px rgba(0, 200, 255, 0.4));
-      pointer-events: none;
-    }
-
-    @keyframes spaceFly {
-      0% {
-        transform: translate(0, 0) scale(0.6) rotate(-20deg);
-        opacity: 0;
-      }
-      40% {
-        transform: translate(40vw, 20vh) scale(0.9) rotate(15deg);
-        opacity: 1;
-      }
-      70% {
-        transform: translate(55vw, 45vh) scale(1) rotate(-10deg);
-      }
-      100% {
-        transform: translate(47vw, 50vh) scale(1) rotate(0deg);
-      }
     }
 
     @keyframes floatIdle {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+      50% { transform: translateY(-8px); }
     }
 
     canvas#confetti-canvas {
@@ -136,12 +122,12 @@
 <body>
   <div class="stars"></div>
 
-  <img id="mainbot" src="logo.png" alt="Main AI Bot" />
-
   <header>
     <h1>AI Said: Search, Respond, Summarize, and Translate</h1>
     <p>Your intelligent assistant for language magic</p>
-    <div style="position: relative; display: inline-block;">
+
+    <div class="cta-wrapper">
+      <img id="mainbot" src="logo.png" alt="Main AI Bot" />
       <button class="cta-button" id="cta" onclick="celebrate()">Download from Chrome Web Store</button>
     </div>
   </header>
@@ -151,31 +137,24 @@
   <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
-    const bot = document.getElementById('mainbot');
-    const button = document.getElementById('cta');
-    const canvas = document.getElementById('confetti-canvas');
-
-    // After flight ends, begin float animation
-    bot.addEventListener('animationend', () => {
-      bot.style.animation = 'floatIdle 3s ease-in-out infinite';
-      bot.style.opacity = '1';
-    });
-
     function celebrate() {
+      const button = document.getElementById('cta');
       const rect = button.getBoundingClientRect();
       const x = (rect.left + rect.width / 2) / window.innerWidth;
       const y = (rect.top + rect.height / 2) / window.innerHeight;
 
+      const canvas = document.getElementById("confetti-canvas");
       const confettiInstance = confetti.create(canvas, { resize: true });
+
       confettiInstance({
         particleCount: 140,
-        spread: 90,
+        spread: 100,
         origin: { x, y }
       });
 
       setTimeout(() => {
         window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
-      }, 600);
+      }, 500);
     }
   </script>
 
