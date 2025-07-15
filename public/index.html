@@ -75,11 +75,10 @@
     #mainbot {
       width: 160px;
       position: absolute;
-      top: -160px;
+      top: -150px;
       left: -160px;
       opacity: 0;
       z-index: 3;
-      transition: transform 3s ease-in-out, opacity 3s ease-in-out;
       pointer-events: none;
     }
 
@@ -117,7 +116,7 @@
     <h1>AI Said: Search, Respond, Summarize, and Translate</h1>
     <p>Your intelligent assistant for language magic</p>
     <div style="position: relative; display: inline-block;">
-      <button class="cta-button" onclick="celebrate()">Download from Chrome Web Store</button>
+      <button class="cta-button" id="ctaBtn" onclick="celebrate()">Download from Chrome Web Store</button>
     </div>
   </header>
 
@@ -128,49 +127,47 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
     const bot = document.getElementById('mainbot');
-    const button = document.querySelector('.cta-button');
+    const button = document.getElementById('ctaBtn');
 
+    // Flight animation to land next to button
     window.addEventListener('load', () => {
-      const rect = button.getBoundingClientRect();
-      const scrollY = window.scrollY || window.pageYOffset;
-
-      const targetTop = rect.top + scrollY - 40;
-      const targetLeft = rect.left + rect.width + 30;
-
-      // Animate bot to button
       setTimeout(() => {
+        const btnRect = button.getBoundingClientRect();
+        const scrollY = window.scrollY || window.pageYOffset;
+
+        const targetTop = btnRect.top + scrollY - 30; // align vertically
+        const targetLeft = btnRect.left + btnRect.width + 20; // align to right of button
+
+        bot.style.transition = 'transform 3s ease-in-out, opacity 3s ease-in-out';
         bot.style.opacity = '1';
-        bot.style.transform = `translate(${targetLeft}px, ${targetTop}px) scale(1) rotate(0deg)`;
-      }, 500);
+        bot.style.transform = `translate(${targetLeft}px, ${targetTop}px)`;
 
-      // Start float after flying in
-      setTimeout(() => {
-        bot.style.transition = 'none';
-        bot.style.animation = 'floatIdle 3.5s ease-in-out infinite';
-      }, 3500);
+        setTimeout(() => {
+          bot.style.transition = 'none';
+          bot.style.animation = 'floatIdle 3.5s ease-in-out infinite';
+        }, 3100);
+      }, 400);
     });
 
     function celebrate() {
       // Stop float
       bot.style.animation = 'none';
 
+      // Confetti centered on bot
       const botRect = bot.getBoundingClientRect();
-      const x = botRect.left + botRect.width / 2;
-      const y = botRect.top + botRect.height / 2;
+      const x = (botRect.left + botRect.width / 2) / window.innerWidth;
+      const y = (botRect.top + botRect.height / 2) / window.innerHeight;
 
       const canvas = document.getElementById("confetti-canvas");
       const confettiInstance = confetti.create(canvas, { resize: true });
 
       confettiInstance({
         particleCount: 140,
-        spread: 100,
-        origin: {
-          x: x / window.innerWidth,
-          y: y / window.innerHeight
-        }
+        spread: 90,
+        origin: { x, y }
       });
 
-      // Zoom out animation
+      // Zoom toward user
       bot.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
       bot.style.transform += ' scale(3.5) translateY(-50px)';
       bot.style.opacity = '0';
