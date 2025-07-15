@@ -85,7 +85,7 @@
       justify-content: center;
       gap: 2rem;
       flex-wrap: wrap;
-      margin-top: 1rem;
+      margin-top: 2rem;
     }
 
     .bot-wrapper {
@@ -141,11 +141,10 @@
 
     #mainbot {
       width: 120px;
+      height: auto;
       animation: floatIdle 3s ease-in-out infinite;
       filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.3));
-      position: relative;
-      z-index: 3;
-    }
+      
 
     @keyframes floatIdle {
       0%, 100% { transform: translateY(0); }
@@ -203,7 +202,6 @@
     © 2025 Harrington Maui Enterprises. All rights reserved.
   </footer>
 
-  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
     function celebrate() {
@@ -216,17 +214,18 @@
       const confettiInstance = confetti.create(canvas, { resize: true });
 
       confettiInstance({
-        particleCount: 200,
-        spread: 180,
-        startVelocity: 50,
+        particleCount: 180,
+        spread: 150,
+        startVelocity: 40,
         origin: { x, y }
       });
 
-      // Open the Chrome Web Store after a short delay
       setTimeout(() => {
         window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
       }, 300);
     }
   </script>
+</body>
+
 </body>
 </html>
