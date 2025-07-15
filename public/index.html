@@ -75,7 +75,9 @@
       transition: transform 0.2s;
       position: relative;
       z-index: 2;
-    }
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+}
+
 
     .cta-button:hover {
       transform: scale(1.05);
@@ -112,15 +114,20 @@
 
   <img class="mainbot" src="logo.png" alt="Main AI Bot" />
 
-  <header>
-    <h1>AI Said: Search, Respond, Summarize, and Translate</h1>
-    <p>Your intelligent assistant for language magic</p>
-    <div style="position: relative; display: inline-block; filter: drop-shadow(0 0 25px rgba(0,200,255,0.4))"> 
-      <button class="cta-button" onclick="celebrate(); window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank')">
-        Download from Chrome Web Store
-      </button>
-    </div>
-  </header>
+ <header>
+  <h1 style="text-shadow: 0 0 10px rgba(0, 200, 255, 0.6);">
+    AI Said: Search, Respond, Summarize, and Translate
+  </h1>
+  <p style="text-shadow: 0 0 8px rgba(0, 200, 255, 0.4);">
+    Your intelligent assistant for language magic
+  </p>
+  <div style="position: relative; display: inline-block;">
+    <button class="cta-button" onclick="celebrate(); window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank')">
+      Download from Chrome Web Store
+    </button>
+  </div>
+</header>
+
 
   <canvas id="confetti-canvas"></canvas>
 
