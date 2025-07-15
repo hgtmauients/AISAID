@@ -20,6 +20,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      min-height: 100vh;
       position: relative;
     }
 
@@ -32,7 +34,6 @@
     }
 
     header {
-      margin-top: 6rem;
       text-align: center;
       z-index: 2;
       animation: fadeIn 1.5s ease-in forwards;
@@ -51,21 +52,21 @@
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
     }
 
     p {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       margin-bottom: 2rem;
     }
 
     .cta-button {
       background: #ff5e7e;
       color: white;
-      padding: 1rem 2rem;
-      font-size: 1rem;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
       border: none;
       border-radius: 2rem;
       cursor: pointer;
@@ -80,8 +81,8 @@
     }
 
     .mainbot {
-      margin-top: 4rem;
-      width: 100px;
+      width: 160px;
+      margin-bottom: 2rem;
       animation: floaty 4s ease-in-out infinite, blink 6s infinite;
     }
 
@@ -106,23 +107,21 @@
 <body>
   <div class="stars"></div>
 
+  <img class="mainbot" src="logo.png" alt="Main AI Bot" />
+
   <header>
-   
     <h1>Rewrite Smarter with AI Said</h1>
     <p>Your intelligent assistant for tone, clarity, and language magic</p>
     <div style="position: relative; display: inline-block;">
       <button class="cta-button" onclick="celebrate()">Get Extension</button>
-     
     </div>
   </header>
-
-  <img class="mainbot" src="logo.png" alt="Main AI Bot" />
 
   <canvas id="confetti-canvas"></canvas>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script> celebrate();
- function celebrate() {
+  <script>
+    function celebrate() {
       confetti({
         particleCount: 70,
         spread: 80,
