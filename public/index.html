@@ -115,10 +115,10 @@
   <img class="mainbot" src="logo.png" alt="Main AI Bot" />
 
  <header>
-  <h1 style="text-shadow: 0 0 10px rgba(0, 200, 255, 0.6);">
+  <h1 style="text-shadow: 0 0 8px rgba(0, 200, 255, 0.5);">
     AI Said: Search, Respond, Summarize, and Translate
   </h1>
-  <p style="text-shadow: 0 0 8px rgba(0, 200, 255, 0.4);">
+  <p style="text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);">
     Your intelligent assistant for language magic
   </p>
   <div style="position: relative; display: inline-block;">
@@ -128,22 +128,24 @@
   </div>
 </header>
 
+<canvas id="confetti-canvas"></canvas>
 
-  <canvas id="confetti-canvas"></canvas>
+<footer style="margin-top: 4rem; font-size: 0.9rem; opacity: 0.8;">
+  © 2025 Harrington Maui Enterprises. All rights reserved.
+</footer>
 
-  <footer>
-    © 2025 Harrington Maui Enterprises. All rights reserved.
-  </footer>
+<!-- Confetti Library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script>
-    function celebrate() {
-      confetti({
-        particleCount: 70,
-        spread: 80,
-        origin: { y: 0.6 }
-      });
-    }
-  </script>
+<script>
+  function celebrate() {
+    confetti({
+      particleCount: 70,
+      spread: 80,
+      origin: { y: 0.6 }
+    });
+  }
+</script>
+
 </body>
 </html>
