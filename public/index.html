@@ -9,7 +9,7 @@
     html, body {
       margin: 0;
       padding: 0;
-      font-family: 'Inter', 'Segoe UI', sans-serif;
+      font-family: 'Inter', sans-serif;
       background: radial-gradient(ellipse at bottom, #0f2027 0%, #203a43 40%, #2c5364 100%);
       color: white;
       overflow-x: hidden;
@@ -56,11 +56,13 @@
       font-size: 2.5rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
+      text-shadow: 0 0 8px rgba(0, 200, 255, 0.5);
     }
 
     p {
       font-size: 1.2rem;
       margin-bottom: 2rem;
+      text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);
     }
 
     .cta-button {
@@ -75,41 +77,40 @@
       transition: transform 0.2s;
       position: relative;
       z-index: 2;
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
-}
-
+      text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+    }
 
     .cta-button:hover {
       transform: scale(1.05);
     }
 
     .mainbot {
-  width: 160px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  animation: flyPath 2.8s ease-in-out forwards;
-  z-index: 2;
-  pointer-events: none;
-}
+      width: 160px;
+      position: absolute;
+      top: -150px;
+      left: -100px;
+      opacity: 0;
+      z-index: 3;
+      animation: flyInAndLand 3s ease-in-out forwards;
+      pointer-events: none;
+    }
 
-@keyframes flyPath {
-  0%   { top: -150px; left: -100px; transform: rotate(-30deg) scale(0.4); opacity: 0; }
-  30%  { top: 100px; left: 80%; transform: rotate(15deg) scale(0.8); opacity: 1; }
-  60%  { top: 200px; left: 55%; transform: rotate(-10deg) scale(1); }
-  100% { top: 290px; left: 30%; transform: rotate(0deg) scale(1); }
-}
+    @keyframes flyInAndLand {
+      0%   { top: -150px; left: -100px; transform: rotate(-30deg) scale(0.4); opacity: 0; }
+      30%  { top: 100px; left: 70%; transform: rotate(20deg) scale(0.7); opacity: 1; }
+      60%  { top: 200px; left: 55%; transform: rotate(-10deg) scale(1); }
+      100% { top: 360px; left: 50%; transform: rotate(0deg) scale(1); }
+    }
 
-@keyframes floatIdle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
+    @keyframes floatIdle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
 
-@keyframes zoomOutAtYou {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(3.8); opacity: 0; }
-}
+    @keyframes zoomOutAtYou {
+      0%   { transform: scale(1); opacity: 1; }
+      100% { transform: scale(3.5) translateY(-50px); opacity: 0; }
+    }
 
     canvas#confetti-canvas {
       position: fixed;
@@ -122,53 +123,53 @@
       margin-top: 6rem;
       font-size: 0.9rem;
       opacity: 0.8;
+      z-index: 2;
     }
   </style>
 </head>
 <body>
   <div class="stars"></div>
 
-   <img id="mainbot" class="mainbot" src="logo.png" alt="Main AI Bot" />
+  <img id="mainbot" class="mainbot" src="logo.png" alt="Main AI Bot" />
 
   <header>
-    <h1 style="text-shadow: 0 0 8px rgba(0, 200, 255, 0.5);">
-      AI Said: Search, Respond, Summarize, and Translate
-    </h1>
-    <p style="text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);">
-      Your intelligent assistant for language magic
-    </p>
+    <h1>AI Said: Search, Respond, Summarize, and Translate</h1>
+    <p>Your intelligent assistant for language magic</p>
     <div style="position: relative; display: inline-block;">
-      <button class="cta-button" onclick="celebrate(); window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank')">
-        Download from Chrome Web Store
-      </button>
+      <button class="cta-button" onclick="celebrate()">Download from Chrome Web Store</button>
     </div>
   </header>
 
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
     const bot = document.getElementById('mainbot');
 
     bot.addEventListener('animationend', () => {
-      bot.style.animation = "floatIdle 3.5s ease-in-out infinite";
+      bot.style.animation = "floatIdle 3s ease-in-out infinite";
     });
 
     function celebrate() {
-      bot.style.animation = "zoomOutAtYou 1s ease-out forwards";
+      // Confetti burst
       confetti({
-        particleCount: 120,
+        particleCount: 150,
         spread: 100,
         origin: { y: 0.6 }
       });
+
+      // Zoom bot toward viewer
+      bot.style.animation = "zoomOutAtYou 1s ease-out forwards";
+
+      // Redirect after short delay
       setTimeout(() => {
         window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
       }, 900);
     }
   </script>
 
- <footer>
-
+  <footer>
     © 2025 Harrington Maui Enterprises. All rights reserved.
   </footer>
+</body>
+</html>
