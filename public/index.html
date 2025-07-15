@@ -44,12 +44,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .logo {
-      width: 100px;
-      margin-bottom: 1rem;
-      animation: pulse 3s infinite;
-    }
-
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
@@ -85,71 +79,6 @@
       transform: scale(1.05);
     }
 
-    .dog-peek {
-      position: absolute;
-      width: 80px;
-      top: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1;
-      animation: peekLoop 6s infinite;
-      transition: transform 0.3s;
-    }
-
-    .dog-peek:hover {
-      transform: translateX(-50%) scale(1.1);
-      filter: brightness(1.1);
-    }
-
-    @keyframes peekLoop {
-      0%, 100% { transform: translateX(-50%) translateY(-10px); }
-      50% { transform: translateX(-50%) translateY(0px); }
-    }
-
-    .dog-peek.heart::after {
-      content: "❤️";
-      position: absolute;
-      top: -20px;
-      right: -10px;
-      font-size: 1.2rem;
-      animation: heartPop 1s ease-in-out forwards;
-    }
-
-    @keyframes heartPop {
-      0% { opacity: 0; transform: scale(0); }
-      50% { opacity: 1; transform: scale(1.4); }
-      100% { opacity: 0; transform: scale(0); }
-    }
-
-    .dog-thought {
-      position: absolute;
-      top: -40px;
-      left: 60px;
-      font-size: 1.3rem;
-      animation: floatEmoji 4s ease-in-out infinite;
-      opacity: 0.8;
-    }
-
-    @keyframes floatEmoji {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-    .bark {
-      position: absolute;
-      top: -25px;
-      left: -30px;
-      color: #ffeb3b;
-      font-weight: bold;
-      animation: barkPop 1s ease-in-out forwards;
-    }
-
-    @keyframes barkPop {
-      0% { opacity: 0; transform: scale(0.5); }
-      50% { opacity: 1; transform: scale(1.2); }
-      100% { opacity: 0; transform: scale(0.8); }
-    }
-
     .mainbot {
       margin-top: 4rem;
       width: 100px;
@@ -183,7 +112,7 @@
     <p>Your intelligent assistant for tone, clarity, and language magic</p>
     <div style="position: relative; display: inline-block;">
       <button class="cta-button" onclick="celebrate()">Get Extension</button>
-      <img class="dog-peek" id="dogPeek" src="ai-dog.png" alt="Bot Dog Peek" />
+     
     </div>
   </header>
 
@@ -192,45 +121,8 @@
   <canvas id="confetti-canvas"></canvas>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script>
-    const dog = document.getElementById('dogPeek');
-    const emojis = ['🦴', '🤖💭', '✨', '🔮', '🐶'];
-    let lastHeart = 0;
-
-    // ❤️ Heart on hover
-    dog.addEventListener('mouseover', () => {
-      if (Date.now() - lastHeart > 2000) {
-        dog.classList.add('heart');
-        setTimeout(() => dog.classList.remove('heart'), 1000);
-        lastHeart = Date.now();
-      }
-    });
-
-    // 🎉 Bounce + confetti + emoji on click
-    dog.addEventListener('click', () => {
-      dog.style.transform = 'translateX(-50%) scale(1.2)';
-      setTimeout(() => dog.style.transform = 'translateX(-50%)', 300);
-
-      celebrate();
-
-      // 💭 Random emoji
-      const bubble = document.createElement('div');
-      bubble.className = 'dog-thought';
-      bubble.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      dog.parentElement.appendChild(bubble);
-      setTimeout(() => bubble.remove(), 3000);
-
-      // 🐶 Bark!
-      if (Math.random() > 0.6) {
-        const bark = document.createElement('div');
-        bark.className = 'bark';
-        bark.textContent = 'Bark!';
-        dog.parentElement.appendChild(bark);
-        setTimeout(() => bark.remove(), 1200);
-      }
-    });
-
-    function celebrate() {
+  <script> celebrate();
+ function celebrate() {
       confetti({
         particleCount: 70,
         spread: 80,
