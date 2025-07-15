@@ -1,34 +1,40 @@
-import Stripe from "stripe";
+import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  const { userEmail, extensionId } = req.body;
+
+  if (!userEmail || !extensionId) {
+    return res.status(400).json({ error: 'Missing required data' });
   }
 
   try {
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
+      mode: 'subscription',
+      payment_method_types: ['card'],
+      customer_email: userEmail,
       line_items: [
         {
-          price_data: {
-            currency: "usd",
-            product_data: {
-              name: "AISaid Premium",
-            },
-            unit_amount: 500,
-          },
-          quantity: 1,
-        },
+          price: process.env.STRIPE_PRICE_ID,
+          quantity: 1
+        }
       ],
-      mode: "payment",
-      success_url: `${req.headers.origin}/success`,
-      cancel_url: `${req.headers.origin}/cancel`,
+      success_url: `${process.env.BASE_URL}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.BASE_URL}/cancel.html`,
+      metadata: {
+        extensionId,
+        userEmail
+      }
     });
 
-    res.status(200).json({ url: session.url });
+    return res.status(200).json({ url: session.url });
   } catch (error) {
-    res.status(500).json({ error: "Failed to create checkout session" });
+    console.error('Stripe error:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
   }
 }
