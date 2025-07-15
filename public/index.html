@@ -77,12 +77,24 @@ h1 {
 
 
     .cta-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 1rem;
-    }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.bot-wrapper {
+  flex-shrink: 0;
+}
+
+.button-wrapper {
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+}
 
     .cta-button {
       background: #ff5e7e;
@@ -144,12 +156,17 @@ h1 {
 </header>
 
 
-    <div class="cta-wrapper">
-      <img id="mainbot" src="logo.png" alt="Main AI Bot" />
-      <button id="cta" class="cta-button" onclick="celebrateAndOpen()">
-        Download from Chrome Web Store
-      </button>
-    </div>
+   <div class="cta-wrapper">
+  <div class="bot-wrapper">
+    <img id="mainbot" src="logo.png" alt="Main AI Bot" />
+  </div>
+  <div class="button-wrapper">
+    <button id="cta" class="cta-button" onclick="celebrate()">
+      Download from Chrome Web Store
+    </button>
+  </div>
+</div>
+
   </header>
 
   <canvas id="confetti-canvas"></canvas>
