@@ -68,12 +68,14 @@ h1 {
       font-size: 1.2rem;
       margin-bottom: 2rem;
       text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);
-    }.subline {
+  .subline {
   font-size: 1rem;
   margin-top: -1rem;
   color: #aeefff;
-  text-shadow: 0 0 5px rgba(0, 200, 255, 0.3);
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 6px rgba(0, 200, 255, 0.3);
 }
+
 
 
     .cta-wrapper {
@@ -162,41 +164,42 @@ h1 {
   </div>
   <div class="button-wrapper">
     <button id="cta" class="cta-button" onclick="celebrate()">
-      Download from Chrome Web Store
-    </button>
-  </div>
+  Download from Chrome Web Store
+</button>
+</div>
 </div>
 
-  </header>
+<canvas id="confetti-canvas"></canvas>
 
-  <canvas id="confetti-canvas"></canvas>
+<footer>
+  © 2025 Harrington Maui Enterprises. All rights reserved.
+</footer>
 
-  <footer>
-    © 2025 Harrington Maui Enterprises. All rights reserved.
-  </footer>
+<!-- Confetti -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+  function celebrate() {
+    const button = document.getElementById('cta');
+    const rect = button.getBoundingClientRect();
+    const x = (rect.left + rect.width / 2) / window.innerWidth;
+    const y = (rect.top + rect.height / 2) / window.innerHeight;
 
-  <!-- Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script>
-    function celebrateAndOpen() {
-      const button = document.getElementById('cta');
-      const rect = button.getBoundingClientRect();
-      const x = (rect.left + rect.width / 2) / window.innerWidth;
-      const y = (rect.top + rect.height / 2) / window.innerHeight;
+    const canvas = document.getElementById("confetti-canvas");
+    const confettiInstance = confetti.create(canvas, { resize: true, useWorker: true });
 
-      const canvas = document.getElementById("confetti-canvas");
-      const confettiInstance = confetti.create(canvas, { resize: true, useWorker: true });
+    confettiInstance({
+      particleCount: 200,
+      spread: 180,
+      startVelocity: 50,
+      origin: { x, y }
+    });
 
-      confettiInstance({
-        particleCount: 200,
-        spread: 160,
-        startVelocity: 45,
-        origin: { x, y }
-      });
-
-      // Open Chrome Web Store (replace with your actual extension URL)
+    // Open the Chrome Web Store after a short delay
+    setTimeout(() => {
       window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
-    }
-  </script>
+    }, 300); // 300ms lets the confetti pop before redirect
+  }
+</script>
+
 </body>
 </html>
