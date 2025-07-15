@@ -87,10 +87,30 @@
     #mainbot {
       width: 160px;
       position: absolute;
-      opacity: 0;
+      top: -120px;
+      left: -150px;
       z-index: 3;
+      opacity: 0;
+      animation: spaceFly 4s ease-in-out forwards;
+      filter: drop-shadow(0 0 25px rgba(0, 200, 255, 0.4));
       pointer-events: none;
-      transition: transform 3s ease-in-out, opacity 3s ease-in-out;
+    }
+
+    @keyframes spaceFly {
+      0% {
+        transform: translate(0, 0) scale(0.6) rotate(-20deg);
+        opacity: 0;
+      }
+      40% {
+        transform: translate(40vw, 20vh) scale(0.9) rotate(15deg);
+        opacity: 1;
+      }
+      70% {
+        transform: translate(55vw, 45vh) scale(1) rotate(-10deg);
+      }
+      100% {
+        transform: translate(47vw, 50vh) scale(1) rotate(0deg);
+      }
     }
 
     @keyframes floatIdle {
@@ -122,7 +142,7 @@
     <h1>AI Said: Search, Respond, Summarize, and Translate</h1>
     <p>Your intelligent assistant for language magic</p>
     <div style="position: relative; display: inline-block;">
-      <button class="cta-button" onclick="celebrate()">Download from Chrome Web Store</button>
+      <button class="cta-button" id="cta" onclick="celebrate()">Download from Chrome Web Store</button>
     </div>
   </header>
 
@@ -132,39 +152,25 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
     const bot = document.getElementById('mainbot');
-    const button = document.querySelector('.cta-button');
+    const button = document.getElementById('cta');
     const canvas = document.getElementById('confetti-canvas');
 
-    // Bot flies to button on load
-    window.addEventListener('load', () => {
-      const rect = button.getBoundingClientRect();
-      const scrollY = window.scrollY || window.pageYOffset;
-      const scrollX = window.scrollX || window.pageXOffset;
-
-      const targetLeft = rect.left + scrollX + rect.width + 10;
-      const targetTop = rect.top + scrollY - 20;
-
+    // After flight ends, begin float animation
+    bot.addEventListener('animationend', () => {
+      bot.style.animation = 'floatIdle 3s ease-in-out infinite';
       bot.style.opacity = '1';
-      bot.style.transform = `translate(${targetLeft}px, ${targetTop}px)`;
-
-      setTimeout(() => {
-        bot.style.transition = 'none';
-        bot.style.animation = 'floatIdle 3s ease-in-out infinite';
-        bot.style.transform = 'translateY(0)'; // prevent snap-back
-      }, 3000);
     });
 
     function celebrate() {
-      // Trigger confetti from bot's current position
-      const botRect = bot.getBoundingClientRect();
-      const confettiX = (botRect.left + botRect.width / 2) / window.innerWidth;
-      const confettiY = (botRect.top + botRect.height / 2) / window.innerHeight;
+      const rect = button.getBoundingClientRect();
+      const x = (rect.left + rect.width / 2) / window.innerWidth;
+      const y = (rect.top + rect.height / 2) / window.innerHeight;
 
       const confettiInstance = confetti.create(canvas, { resize: true });
       confettiInstance({
         particleCount: 140,
         spread: 90,
-        origin: { x: confettiX, y: confettiY }
+        origin: { x, y }
       });
 
       setTimeout(() => {
