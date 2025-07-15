@@ -52,51 +52,71 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-h1 {
-  font-size: 2.5rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #ffffff;
-  text-shadow:
-    0 0 8px rgba(0, 200, 255, 0.5),
-    0 0 12px rgba(0, 200, 255, 0.4),
-    0 0 20px rgba(0, 200, 255, 0.3);
-}
-
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+      text-shadow:
+        0 0 8px rgba(0, 200, 255, 0.5),
+        0 0 12px rgba(0, 200, 255, 0.4),
+        0 0 20px rgba(0, 200, 255, 0.3);
+      animation: glowPulse 3s ease-in-out infinite;
+    }
 
     p {
       font-size: 1.2rem;
       margin-bottom: 2rem;
       text-shadow: 0 0 6px rgba(0, 200, 255, 0.4);
-  .subline {
-  font-size: 1rem;
-  margin-top: -1rem;
-  color: #aeefff;
-  letter-spacing: 0.5px;
-  text-shadow: 0 0 6px rgba(0, 200, 255, 0.3);
-}
+    }
 
-
+    .subline {
+      font-size: 1rem;
+      margin-top: -1rem;
+      color: #aeefff;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 6px rgba(0, 200, 255, 0.3);
+    }
 
     .cta-wrapper {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-top: 1rem;
-}
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
 
-.bot-wrapper {
-  flex-shrink: 0;
-}
+    .bot-wrapper {
+      flex-shrink: 0;
+      position: relative;
+      width: 120px;
+      height: 120px;
+    }
 
-.button-wrapper {
-  flex-basis: 100%;
-  display: flex;
-  justify-content: center;
-}
+    .sparkle-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+      pointer-events: none;
+      opacity: 0.3;
+      animation: sparkleFloat 12s linear infinite;
+      mix-blend-mode: screen;
+      z-index: 4;
+    }
+
+    @keyframes sparkleFloat {
+      0% { background-position: 0 0; }
+      100% { background-position: 300px 300px; }
+    }
+
+    .button-wrapper {
+      flex-basis: 100%;
+      display: flex;
+      justify-content: center;
+    }
 
     .cta-button {
       background: #ff5e7e;
@@ -111,6 +131,8 @@ h1 {
       position: relative;
       z-index: 2;
       text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+      animation: glowPulse 3s ease-in-out infinite;
+      margin-top: 0.5rem;
     }
 
     .cta-button:hover {
@@ -121,12 +143,18 @@ h1 {
       width: 120px;
       animation: floatIdle 3s ease-in-out infinite;
       filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.3));
+      position: relative;
       z-index: 3;
     }
 
     @keyframes floatIdle {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.2)); }
+      50% { filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5)); }
     }
 
     #confetti-canvas {
@@ -151,55 +179,54 @@ h1 {
 <body>
   <div class="stars"></div>
 
- <header>
-  <h1>AI Said</h1>
-  <p>Your intelligent assistant for language magic</p>
-  <p class="subline">Search-Respond-Summarize-Translate</p>
-</header>
+  <header>
+    <h1>AI Said</h1>
+    <p>Your intelligent assistant for language magic</p>
+    <p class="subline">Search-Respond-Summarize-Translate</p>
+  </header>
 
-
-   <div class="cta-wrapper">
-  <div class="bot-wrapper">
-    <img id="mainbot" src="logo.png" alt="Main AI Bot" />
+  <div class="cta-wrapper">
+    <div class="bot-wrapper">
+      <img id="mainbot" src="logo.png" alt="Main AI Bot" />
+      <div class="sparkle-overlay"></div>
+    </div>
+    <div class="button-wrapper">
+      <button id="cta" class="cta-button" onclick="celebrate()">
+        Download from Chrome Web Store
+      </button>
+    </div>
   </div>
-  <div class="button-wrapper">
-    <button id="cta" class="cta-button" onclick="celebrate()">
-  Download from Chrome Web Store
-</button>
-</div>
-</div>
 
-<canvas id="confetti-canvas"></canvas>
+  <canvas id="confetti-canvas"></canvas>
 
-<footer>
-  © 2025 Harrington Maui Enterprises. All rights reserved.
-</footer>
+  <footer>
+    © 2025 Harrington Maui Enterprises. All rights reserved.
+  </footer>
 
-<!-- Confetti -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<script>
-  function celebrate() {
-    const button = document.getElementById('cta');
-    const rect = button.getBoundingClientRect();
-    const x = (rect.left + rect.width / 2) / window.innerWidth;
-    const y = (rect.top + rect.height / 2) / window.innerHeight;
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    function celebrate() {
+      const button = document.getElementById('cta');
+      const rect = button.getBoundingClientRect();
+      const x = (rect.left + rect.width / 2) / window.innerWidth;
+      const y = (rect.top + rect.height / 2) / window.innerHeight;
 
-    const canvas = document.getElementById("confetti-canvas");
-    const confettiInstance = confetti.create(canvas, { resize: true, useWorker: true });
+      const canvas = document.getElementById("confetti-canvas");
+      const confettiInstance = confetti.create(canvas, { resize: true });
 
-    confettiInstance({
-      particleCount: 200,
-      spread: 180,
-      startVelocity: 50,
-      origin: { x, y }
-    });
+      confettiInstance({
+        particleCount: 200,
+        spread: 180,
+        startVelocity: 50,
+        origin: { x, y }
+      });
 
-    // Open the Chrome Web Store after a short delay
-    setTimeout(() => {
-      window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
-    }, 300); // 300ms lets the confetti pop before redirect
-  }
-</script>
-
+      // Open the Chrome Web Store after a short delay
+      setTimeout(() => {
+        window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
+      }, 300);
+    }
+  </script>
 </body>
 </html>
