@@ -84,7 +84,7 @@
       transform: scale(1.05);
     }
 
-    .mainbot {
+    #mainbot {
       width: 160px;
       position: absolute;
       top: -150px;
@@ -130,7 +130,7 @@
 <body>
   <div class="stars"></div>
 
-  <img id="mainbot" class="mainbot" src="logo.png" alt="Main AI Bot" />
+  <img id="mainbot" src="logo.png" alt="Main AI Bot" />
 
   <header>
     <h1>AI Said: Search, Respond, Summarize, and Translate</h1>
@@ -146,22 +146,32 @@
   <script>
     const bot = document.getElementById('mainbot');
 
+    // Start floating once landed
     bot.addEventListener('animationend', () => {
       bot.style.animation = "floatIdle 3s ease-in-out infinite";
     });
 
     function celebrate() {
-      // Confetti burst
-      confetti({
-        particleCount: 150,
+      // Get bot's position to fire confetti from there
+      const botRect = bot.getBoundingClientRect();
+      const x = botRect.left + botRect.width / 2;
+      const y = botRect.top + botRect.height / 2;
+
+      const canvas = document.getElementById("confetti-canvas");
+      const confettiSettings = confetti.create(canvas, { resize: true });
+
+      confettiSettings({
+        particleCount: 140,
         spread: 100,
-        origin: { y: 0.6 }
+        origin: {
+          x: x / window.innerWidth,
+          y: y / window.innerHeight
+        }
       });
 
-      // Zoom bot toward viewer
+      // Bot zooms out at you
       bot.style.animation = "zoomOutAtYou 1s ease-out forwards";
 
-      // Redirect after short delay
       setTimeout(() => {
         window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
       }, 900);
