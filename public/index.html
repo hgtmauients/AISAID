@@ -91,15 +91,8 @@
       left: -100px;
       opacity: 0;
       z-index: 3;
-      animation: flyInAndLand 3s ease-in-out forwards;
       pointer-events: none;
-    }
-
-    @keyframes flyInAndLand {
-      0%   { top: -150px; left: -100px; transform: rotate(-30deg) scale(0.4); opacity: 0; }
-      30%  { top: 100px; left: 70%; transform: rotate(20deg) scale(0.7); opacity: 1; }
-      60%  { top: 200px; left: 55%; transform: rotate(-10deg) scale(1); }
-      100% { top: 360px; left: 50%; transform: rotate(0deg) scale(1); }
+      transition: all 3s ease-in-out;
     }
 
     @keyframes floatIdle {
@@ -142,17 +135,41 @@
 
   <canvas id="confetti-canvas"></canvas>
 
+  <footer>
+    © 2025 Harrington Maui Enterprises. All rights reserved.
+  </footer>
+
+  <!-- Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
   <script>
     const bot = document.getElementById('mainbot');
+    const button = document.querySelector('.cta-button');
 
-    // Start floating once landed
-    bot.addEventListener('animationend', () => {
-      bot.style.animation = "floatIdle 3s ease-in-out infinite";
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const rect = button.getBoundingClientRect();
+        const scrollY = window.scrollY || window.pageYOffset;
+
+        const targetTop = rect.top + scrollY - 40;
+        const targetLeft = rect.left + rect.width + 20;
+
+        bot.style.opacity = '1';
+        bot.style.transform = `translate(${targetLeft}px, ${targetTop}px) scale(1)`;
+        
+        setTimeout(() => {
+          bot.style.transition = 'none';
+          bot.style.animation = 'floatIdle 3s ease-in-out infinite';
+        }, 3000);
+      }, 300); // short delay to allow DOM to settle
     });
 
     function celebrate() {
-      // Get bot's position to fire confetti from there
+      bot.style.animation = 'none'; // stop floating
+      bot.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+      bot.style.transform += ' scale(3.5) translateY(-50px)';
+      bot.style.opacity = '0';
+
       const botRect = bot.getBoundingClientRect();
       const x = botRect.left + botRect.width / 2;
       const y = botRect.top + botRect.height / 2;
@@ -169,17 +186,10 @@
         }
       });
 
-      // Bot zooms out at you
-      bot.style.animation = "zoomOutAtYou 1s ease-out forwards";
-
       setTimeout(() => {
         window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
-      }, 900);
+      }, 1000);
     }
   </script>
-
-  <footer>
-    © 2025 Harrington Maui Enterprises. All rights reserved.
-  </footer>
 </body>
 </html>
