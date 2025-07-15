@@ -40,18 +40,6 @@
       100% { background-position: 1000px 1000px; }
     }
 
-    header {
-      z-index: 2;
-      animation: fadeIn 1.5s ease-in forwards;
-      opacity: 0;
-      margin-top: 2rem;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     h1 {
       font-size: 2.5rem;
       font-weight: 600;
@@ -87,12 +75,12 @@
     #mainbot {
       width: 160px;
       position: absolute;
-      top: -150px;
-      left: -100px;
+      top: -160px;
+      left: -160px;
       opacity: 0;
       z-index: 3;
+      transition: transform 3s ease-in-out, opacity 3s ease-in-out;
       pointer-events: none;
-      transition: all 3s ease-in-out;
     }
 
     @keyframes floatIdle {
@@ -135,49 +123,45 @@
 
   <canvas id="confetti-canvas"></canvas>
 
-  <footer>
-    © 2025 Harrington Maui Enterprises. All rights reserved.
-  </footer>
+  <footer>© 2025 Harrington Maui Enterprises. All rights reserved.</footer>
 
-  <!-- Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
   <script>
     const bot = document.getElementById('mainbot');
     const button = document.querySelector('.cta-button');
 
     window.addEventListener('load', () => {
+      const rect = button.getBoundingClientRect();
+      const scrollY = window.scrollY || window.pageYOffset;
+
+      const targetTop = rect.top + scrollY - 40;
+      const targetLeft = rect.left + rect.width + 30;
+
+      // Animate bot to button
       setTimeout(() => {
-        const rect = button.getBoundingClientRect();
-        const scrollY = window.scrollY || window.pageYOffset;
-
-        const targetTop = rect.top + scrollY - 40;
-        const targetLeft = rect.left + rect.width + 20;
-
         bot.style.opacity = '1';
-        bot.style.transform = `translate(${targetLeft}px, ${targetTop}px) scale(1)`;
-        
-        setTimeout(() => {
-          bot.style.transition = 'none';
-          bot.style.animation = 'floatIdle 3s ease-in-out infinite';
-        }, 3000);
-      }, 300); // short delay to allow DOM to settle
+        bot.style.transform = `translate(${targetLeft}px, ${targetTop}px) scale(1) rotate(0deg)`;
+      }, 500);
+
+      // Start float after flying in
+      setTimeout(() => {
+        bot.style.transition = 'none';
+        bot.style.animation = 'floatIdle 3.5s ease-in-out infinite';
+      }, 3500);
     });
 
     function celebrate() {
-      bot.style.animation = 'none'; // stop floating
-      bot.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
-      bot.style.transform += ' scale(3.5) translateY(-50px)';
-      bot.style.opacity = '0';
+      // Stop float
+      bot.style.animation = 'none';
 
       const botRect = bot.getBoundingClientRect();
       const x = botRect.left + botRect.width / 2;
       const y = botRect.top + botRect.height / 2;
 
       const canvas = document.getElementById("confetti-canvas");
-      const confettiSettings = confetti.create(canvas, { resize: true });
+      const confettiInstance = confetti.create(canvas, { resize: true });
 
-      confettiSettings({
+      confettiInstance({
         particleCount: 140,
         spread: 100,
         origin: {
@@ -185,6 +169,11 @@
           y: y / window.innerHeight
         }
       });
+
+      // Zoom out animation
+      bot.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+      bot.style.transform += ' scale(3.5) translateY(-50px)';
+      bot.style.opacity = '0';
 
       setTimeout(() => {
         window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
