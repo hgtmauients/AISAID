@@ -128,35 +128,48 @@
 
     <div class="cta-wrapper">
       <img id="mainbot" src="logo.png" alt="Main AI Bot" />
-      <button class="cta-button" id="cta" onclick="celebrate()">Download from Chrome Web Store</button>
-    </div>
-  </header>
+      <!-- Button -->
+<button id="cta" class="cta-button" onclick="celebrate()">
+  Download from Chrome Web Store
+</button>
 
-  <canvas id="confetti-canvas"></canvas>
+<!-- Confetti Canvas -->
+<canvas id="confetti-canvas"></canvas>
 
-  <!-- Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script>
-    function celebrate() {
-      const button = document.getElementById('cta');
-      const rect = button.getBoundingClientRect();
-      const x = (rect.left + rect.width / 2) / window.innerWidth;
-      const y = (rect.top + rect.height / 2) / window.innerHeight;
+<!-- Confetti Script -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+  function celebrate() {
+    const button = document.getElementById('cta');
+    const rect = button.getBoundingClientRect();
+    const x = (rect.left + rect.width / 2) / window.innerWidth;
+    const y = (rect.top + rect.height / 2) / window.innerHeight;
 
-      const canvas = document.getElementById("confetti-canvas");
-      const confettiInstance = confetti.create(canvas, { resize: true });
+    const canvas = document.getElementById("confetti-canvas");
+    const confettiInstance = confetti.create(canvas, { resize: true, useWorker: true });
 
-      confettiInstance({
-        particleCount: 140,
-        spread: 100,
-        origin: { x, y }
-      });
+    confettiInstance({
+      particleCount: 140,
+      spread: 100,
+      startVelocity: 30,
+      origin: { x, y }
+    });
+  }
+</script>
 
-      setTimeout(() => {
-        window.open('https://chrome.google.com/webstore/detail/your-extension-id-here', '_blank');
-      }, 500);
-    }
-  </script>
+<!-- Optional: Fullscreen Confetti Canvas Styling -->
+<style>
+  #confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+  }
+</style>
+
 
   <footer>
     © 2025 Harrington Maui Enterprises. All rights reserved.
