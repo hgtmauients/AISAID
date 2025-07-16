@@ -1,0 +1,21 @@
+{
+  "name": "aisaid",
+  "version": "1.0.0",
+  "description": "AI-enhanced Chrome Extension and serverless backend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.10.1",
+    "openai": "^4.26.0",
+    "stripe": "^12.13.0",
+    "micro": "^9.3.4",
+    "dotenv": "^16.4.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}
